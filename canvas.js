@@ -7,6 +7,7 @@ var death = new Audio("death.mp3");
 var fear = new Audio("fear.mp3");
 var spawn = new Audio("spawn.mp3");
 var s = 0;
+var dead = 0;
 
 var distance = (x0,y0,x2,y2) => {
     //d=√((x_2-x_0)²+(y_2-y_0)²)
@@ -485,9 +486,10 @@ var game = () => {
         setInterval(() => {
             spawn.play();
         },500)
-        setTimeout(() => {
+        if(dead == 0) setTimeout(() => {
             location.reload();
         },15000)
+        dead = 1;
     }
     setTimeout(() => {
         drawing();
