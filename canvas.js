@@ -407,7 +407,7 @@ var handelenemys = () => {
                 enemys[i].end();
                 player1.insanity *= 0.9;
             }
-        } else if(RB(1,200) == 1) {
+        } else if(RB(1,200 - player1.insanity * 2) <= 1) {
             let a = RB(1,4);
     let speed = 1;
     let health = 20;
@@ -426,9 +426,9 @@ var handelenemys = () => {
             break;
     }
         }
-        if(distance(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,enemys[i].x + enemys[i].size / 2,enemys[i].y + enemys[i].size / 2) <= 6) {
+        if(distance(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,enemys[i].x + enemys[i].size / 2,enemys[i].y + enemys[i].size / 2) <= 11 && enemys[i].live == 1) {
             fear.play();
-            player1.insanity += 0.75 * (player1.insanity / player1.maxinsanity + 1);
+            player1.insanity += 0.8 * (player1.insanity / player1.maxinsanity + 1);
         }
     }
 }
