@@ -7,7 +7,12 @@ var death = new Audio("death.mp3");
 var fear = new Audio("fear.mp3");
 var spawn = new Audio("spawn.mp3");
 var s = 0;
+var s2 = 0;
 var dead = 0;
+var maxlevels = 4;
+var currentlevel = RB(0,maxlevels);
+var kills = 0;
+var maxkills = 10;
 
 var distance = (x0,y0,x2,y2) => {
     //d=√((x_2-x_0)²+(y_2-y_0)²)
@@ -67,9 +72,12 @@ var array2D = (y,x) => {
 var map = array2D(canvas.height,canvas.width);
 var map2 = array2D(canvas.height,canvas.width);
 var sprites = {
-    level1: {
+   level: [
+    {//level 0
         height: 10,
         width: 20,
+        startX: 10,
+        startY: 1,
         map: [
             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
@@ -83,6 +91,110 @@ var sprites = {
             [1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
         ]
     },
+    {//level 1
+        height: 20,
+        width: 40,
+        startX: 1,
+        startY: 4,
+        map: [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
+        ]
+    },
+    {//level 2
+        height: 20,
+        width: 40,
+        startX: 20,
+        startY: 13,
+        map: [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
+[1,1,1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
+[0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
+        ]
+    },
+    {//level 3
+        height: 20,
+        width: 40,
+        startX: 3,
+        startY: 1,
+        map: [
+[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,],
+[1,1,1,1,0,0,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,],
+[1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
+        ]
+
+    },
+    {//level 4
+        height: 10,
+        width: 20,
+        startX: 0,
+        startY: 1,
+        map: [
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[1,1,0,0,0,0,1,1,1,0,0,1,1,1,0,0,0,0,1,1,],
+[0,0,0,0,0,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0,],
+[0,0,0,0,1,1,1,0,0,0,0,0,0,1,1,1,0,0,0,0,],
+[0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,]
+        ]
+    }
+],
     player: {
         height: 10,
         width: 5,
@@ -117,7 +229,7 @@ class player {
         this.x2 = 0;
         this.y2 = 0;
         this.fuel = 5;
-        this.maxfuel = 5;
+        this.maxfuel = 10;
         this.insanity = 0;
         this.maxinsanity = 100;
     }
@@ -252,14 +364,12 @@ drawing = () => {
         ctx.fillStyle = "rgb(50,0,0)";
         ctx.fillRect(0,0,canvas.width,canvas.height);
     }
-    ctx.fillStyle = "white";
-    ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity,0,canvas.height / 10,canvas.width);
     for(let i = 0; i < canvas.height; i++) {
         for(let j = 0; j < canvas.width; j++) {
             map2[i][j] = map[i][j];
-            let ii = Math.floor((i / canvas.height) * sprites.level1.height);
-            let jj = Math.floor((j / canvas.width) * sprites.level1.width);
-            if(sprites.level1.map[ii][jj] == 1) {
+            let ii = Math.floor((i / canvas.height) * sprites.level[currentlevel].height);
+            let jj = Math.floor((j / canvas.width) * sprites.level[currentlevel].width);
+            if(sprites.level[currentlevel].map[ii][jj] == 1) {
                 ctx.fillStyle = "white";
                 ctx.fillRect(j,i,1,1);
             } else if(map[i][j] == 1) {
@@ -287,6 +397,8 @@ drawing = () => {
             }
         }
     }
+    ctx.fillStyle = "rgb("+RB(200,255)+",0,0)";
+    ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity,0,canvas.height / 10,canvas.width);
     ctx.fillStyle = "grey";
     ctx.fillRect(mouse.x,mouse.y,1,1);
 }
@@ -310,6 +422,9 @@ onkeydown = onkeyup = (e) => {
                 player1.update();
                 keys[87] = 0;
                 keys[38] = 0;
+                if(keys[32]) {
+                    changelevel(0);
+                }
                 keys[32] = 0;
             }
         }
@@ -352,7 +467,7 @@ var handlebullet = () => {
                 for(let x = 0; x < bullets[i].size; x++) {
                     if((bullets[i].x > bullets[i].size && bullets[i].x < canvas.width - bullets[i].size) && (bullets[i].y > bullets[i].size && bullets[i].y < canvas.height - bullets[i].size)) {
                         map[Math.floor(bullets[i].y + y)][Math.floor(bullets[i].x + x)] = 3;
-                        if(sprites.level1.map[where(canvas.height,bullets[i].y + y,sprites.level1.height)][where(canvas.width,bullets[i].x + x,sprites.level1.width)] == 1) {
+                        if(sprites.level[currentlevel].map[where(canvas.height,bullets[i].y + y,sprites.level[currentlevel].height)][where(canvas.width,bullets[i].x + x,sprites.level[currentlevel].width)] == 1) {
                         bullets[i].end();
                     }
                     }
@@ -392,7 +507,7 @@ var handelenemys = () => {
                     let xx = enemys[i].x + x;
                     let yy = enemys[i].y + y
                     if(map2[Math.floor(yy)][Math.floor(xx)] == 3) {
-                        if(sprites.level1.map[where(canvas.height,yy,sprites.level1.height)][where(canvas.width,xx,sprites.level1.width)] != 1) {
+                        if(sprites.level[currentlevel].map[where(canvas.height,yy,sprites.level[currentlevel].height)][where(canvas.width,xx,sprites.level[currentlevel].width)] != 1) {
                             enemys[i].health--;
                             enemys[i].speedX *= -2;
                             enemys[i].speedY *= -2;
@@ -406,6 +521,11 @@ var handelenemys = () => {
             if(enemys[i].health <= 0) {
                 enemys[i].end();
                 player1.insanity *= 0.9;
+                kills++;
+                if(kills >= maxkills) {
+                    kills = 0;
+                    changelevel(currentlevel + 1);
+                }
             }
         } else if(RB(1,200 - player1.insanity * 2) <= 1) {
             let a = RB(1,4);
@@ -428,27 +548,49 @@ var handelenemys = () => {
         }
         if(distance(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,enemys[i].x + enemys[i].size / 2,enemys[i].y + enemys[i].size / 2) <= 11 && enemys[i].live == 1) {
             fear.play();
-            player1.insanity += 0.8 * (player1.insanity / player1.maxinsanity + 1);
+            player1.insanity += 0.6 * (player1.insanity / player1.maxinsanity + 1);
         }
     }
 }
+var changelevel = (whatlevel) => {
+    if(whatlevel > maxlevels) {
+        whatlevel = 0;
+    } else if(whatlevel < 0) {
+        whatlevel = 0;
+    }
+    player1.insanity *= 0.7;
+    for(let i = 0; i < maxenemys; i++) {
+        enemys[i].end();
+    }
+    player1.recoilX = 0;
+    player1.recoilY = 0;
+    player1.speedX = 0;
+    player1.speedY = 0;
+    player1.x = where(sprites.level[whatlevel].width,sprites.level[whatlevel].startX,canvas.width);
+    player1.y = where(sprites.level[whatlevel].height,sprites.level[whatlevel].startY,canvas.height);
+    currentlevel = whatlevel;
+}
 var game = () => {
+    if(s == 0) {
+        menu();
+        return 0;
+    }
     if(player1.y + sprites.player.height < canvas.height) {
         if(player1.speedY < 1) {
             player1.speedY += 0.2;
         }
     }
-    if((player1.y + sprites.player.height > canvas.height - (Math.abs(player1.speedY) + Math.abs(player1.recoilY))) || (sprites.level1.map[where(canvas.height,player1.y + sprites.player.height,sprites.level1.height)][where(canvas.width,player1.x,sprites.level1.width)] == 1 || sprites.level1.map[where(canvas.height,player1.y + sprites.player.height,sprites.level1.height)][where(canvas.width,player1.x + sprites.player.width,sprites.level1.width)] == 1)) {
+    if((player1.y + sprites.player.height > canvas.height - (Math.abs(player1.speedY) + Math.abs(player1.recoilY))) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1)) {
         player1.speedY = 0;
         player1.recoilY = 0;
         if(RB(1,10) == 1) {
             if(player1.fuel < player1.maxfuel) player1.fuel++;
         }
-    } else if(sprites.level1.map[where(canvas.height,player1.y,sprites.level1.height)][where(canvas.width,player1.x,sprites.level1.width)] == 1 || sprites.level1.map[where(canvas.height,player1.y,sprites.level1.height)][where(canvas.width,player1.x + sprites.player.width,sprites.level1.width)] == 1) {
+    } else if(sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1) {
         player1.speedY = 1;
         player1.recoilY = 0;
     }
-    if((sprites.level1.map[where(canvas.height,player1.y,sprites.level1.height)][where(canvas.width,player1.x,sprites.level1.width)] == 1 || sprites.level1.map[where(canvas.height,player1.y,sprites.level1.height)][where(canvas.width,player1.x + sprites.player.width,sprites.level1.width)] == 1) || (sprites.level1.map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level1.height)][where(canvas.width,player1.x,sprites.level1.width)] == 1 || sprites.level1.map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level1.height)][where(canvas.width,player1.x + sprites.player.width,sprites.level1.width)] == 1)) { //very long line yes very nice
+    if((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1)) { //very long line yes very nice
         player1.speedX *= -2.2;
         player1.recoilX *= -2.2;
     }
@@ -497,15 +639,23 @@ var game = () => {
         requestAnimationFrame(game());
     },1000/30);
 }
-ctx.fillStyle = "red";
+var menu = () => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "red";
 ctx.fillText("WASD OR ARROW KEYS TO MOVE!",canvas.width / 13,canvas.height / 2 - 20,canvas.width);
 ctx.fillText("RIGHT CLICK TO USE ROCKET BOOST!",canvas.width / 17,canvas.height / 2,canvas.width);
 ctx.fillText("CLICK TO START AND SHOOT!",canvas.width / 5,canvas.height / 2 + 20,canvas.width);
+}
+menu();
 addEventListener("click",(e) => {
     if(s != 1) {
-        alert("YOU HAVE TO KEEP THE INSANITY UNDER 100 OTHERWISE THE DEMONS WILL GET YOU!")
-        if(s != 1) game();
         s = 1;
+        game();
+        s2 = 0;
+        alert("YOU HAVE TO KEEP THE INSANITY UNDER 100 OTHERWISE THE DEMONS WILL GET YOU!");
+        setTimeout(() => {
+            s2 = 1;
+        },1000);
     }
     if(player1.insanity < player1.maxinsanity && s == 1) {
         let speedX = test(player1.x2,player1.y2,mouse.x,mouse.y,"X");
@@ -515,3 +665,9 @@ addEventListener("click",(e) => {
     shoot(player1.x2,player1.y2,speedX,speedY,2,5);
     }
 })
+window.onblur = () => {
+    if(s2 == 1) {
+        s = 0;
+    menu();
+    }
+}
