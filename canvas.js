@@ -276,7 +276,7 @@ class player {
         }
     }
 }
-var maxbullets = 2000;
+var maxbullets = 100;
 var shootindex = 0;
 class bullet {
     constructor() {
@@ -372,20 +372,6 @@ drawing = () => {
             if(sprites.level[currentlevel].map[ii][jj] == 1) {
                 ctx.fillStyle = "white";
                 ctx.fillRect(j,i,1,1);
-            } else if(map[i][j] == 1) {
-                for(let y = 0; y < sprites.player.height; y++) {
-                    for(let x = 0; x < sprites.player.width; x++) {
-                        ctx.fillStyle = "black";
-                        if(sprites.player.map[y][x] == 1) {
-                            ctx.fillStyle = "white";
-                        } else if(sprites.player.map[y][x] == 2) {
-                            ctx.fillStyle = "rgb("+RB(0,255)+","+RB(0,255)+","+RB(0,255)+")"
-                        } else if(sprites.player.map[y][x] == 3) {
-                            ctx.fillStyle = "grey";
-                        }
-                        ctx.fillRect(Math.floor(player1.x + x),Math.floor(player1.y + y),1,1);
-                    }
-                }
             } else if(map[i][j] == 2) {
                 ctx.fillStyle = "green";
                 ctx.fillRect(j,i,1,1);
@@ -621,7 +607,19 @@ var game = () => {
     player1.x2 = x;
     player1.y2 = y;
     handlebullet();
-    map[Math.floor(player1.y)][Math.floor(player1.x)] = 1;
+    for(let y = 0; y < sprites.player.height; y++) {
+        for(let x = 0; x < sprites.player.width; x++) {
+            ctx.fillStyle = "black";
+            if(sprites.player.map[y][x] == 1) {
+                ctx.fillStyle = "white";
+            } else if(sprites.player.map[y][x] == 2) {
+                ctx.fillStyle = "rgb("+RB(0,255)+","+RB(0,255)+","+RB(0,255)+")"
+            } else if(sprites.player.map[y][x] == 3) {
+                ctx.fillStyle = "grey";
+            }
+            ctx.fillRect(Math.floor(player1.x + x),Math.floor(player1.y + y),1,1);
+        }
+    }
     if(player1.insanity > player1.maxinsanity) {
         document.getElementById("clap").play();
         fear.volume = 0;
@@ -633,10 +631,11 @@ var game = () => {
         },15000)
         dead = 1;
     }
+    handelenemys();
     setTimeout(() => {
         drawing();
-        handelenemys();
-        requestAnimationFrame(game());
+        game();
+        return 0;
     },1000/30);
 }
 var menu = () => {
