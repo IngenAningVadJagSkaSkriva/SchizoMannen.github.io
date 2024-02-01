@@ -656,7 +656,7 @@ var game = () => {
         },15000)
         dead = 1;
     }
-    if(RB(1,20) == 1 && player1.insanity > 0) {
+    if(RB(1,25) == 1 && player1.insanity > 1) {
         player1.insanity--;
     }
     handelenemys();
