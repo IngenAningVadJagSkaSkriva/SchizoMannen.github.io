@@ -690,7 +690,7 @@ var game = () => {
             } else if(sprites.player.map[y][x] == 3) {
                 ctx.fillStyle = "grey";
             }
-            ctx.fillRect(Math.floor(player1.x + x),Math.floor(player1.y + y),1,1);
+            if((player1.y + y < canvas.height && player1.y + y > 0) && (player1.x + x < canvas.width && player1.x + x > 0)) ctx.fillRect(Math.floor(player1.x + x),Math.floor(player1.y + y),1,1);
         }
     }
     if(player1.insanity > player1.maxinsanity) {
