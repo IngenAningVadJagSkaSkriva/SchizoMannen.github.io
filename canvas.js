@@ -14,6 +14,20 @@ var currentlevel = RB(0,maxlevels);
 var kills = 0;
 var maxkills = 10;
 var speed = 1;
+var difficulty = 0;
+var done = 0;
+while(done == 0) {
+    if(confirm("do you want easy mode?")) {
+        difficulty = 0;
+        done = 1;
+    } else if(confirm("do you want hard mode?")) {
+        difficulty = 0.3;
+        done = 1;
+    } else if(confirm("do you want impossible mode?")) {
+        difficulty = 0.6;
+        done = 1;
+    }
+}
 
 var distance = (x0,y0,x2,y2) => {
     //d=√((x_2-x_0)²+(y_2-y_0)²)
@@ -433,7 +447,13 @@ drawing = () => {
         }
     }
     ctx.fillStyle = "rgb("+RB(200,255)+",0,0)";
-    ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity,0,canvas.height / 10,canvas.width);
+    if(difficulty < 0.3) {
+        ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity+"  EASY MODE",0,canvas.height / 10,canvas.width);
+    } else if(difficulty == 0.3) {
+        ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity+"  HARD MODE",0,canvas.height / 10,canvas.width);
+    } else if(difficulty == 0.6) {
+        ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity+"  IMPOSSIBLE!",0,canvas.height / 10,canvas.width);
+    }
     ctx.fillStyle = "grey";
     ctx.fillRect(mouse.x,mouse.y,1,1);
 }
@@ -565,9 +585,9 @@ var handelenemys = () => {
         } else if(RB(1,200 - player1.insanity * 2) <= 1) {
             let a = RB(1,4);
     if(player1.insanity > 50) {
-        speed = 1.25;
+        speed = 1.25 + difficulty;
     } else {
-        speed = 1;
+        speed = 1 + difficulty;
     }
     let health = 20;
     switch(a) {
@@ -587,7 +607,7 @@ var handelenemys = () => {
         }
         if(distance(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,enemys[i].x + enemys[i].size / 2,enemys[i].y + enemys[i].size / 2) <= 11 && enemys[i].live == 1) {
             fear.play();
-            player1.insanity += 0.5 * (player1.insanity / player1.maxinsanity + 1);
+            player1.insanity += (0.5 + difficulty) * (player1.insanity / player1.maxinsanity + 1);
         }
     }
 }
