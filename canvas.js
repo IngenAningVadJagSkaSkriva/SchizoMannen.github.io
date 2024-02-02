@@ -619,7 +619,7 @@ var game = () => {
             player1.speedY += 0.2;
         }
     }
-    if((player1.y + sprites.player.height > canvas.height - (Math.abs(player1.speedY) + Math.abs(player1.recoilY))) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1)) {
+    if((player1.y + sprites.player.height > canvas.height - (Math.abs(player1.speedY) + Math.abs(player1.recoilY))) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height + (Math.abs(player1.speedY) + Math.abs(player1.recoilY)),sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1)) {
         player1.speedY = 0;
         player1.recoilY = 0;
         if(RB(1,10) == 1) {
@@ -636,7 +636,7 @@ var game = () => {
     if(player1.y > canvas.height) {
         player1.speedY = -1;
         player1.recoilY = 0;
-    } else if(player1.y < 5) {
+    } else if(player1.y < (Math.abs(player1.speedY) + Math.abs(player1.recoilY))) {
         player1.speedY = 1;
         player1.recoilY = 0;
     }
