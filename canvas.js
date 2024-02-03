@@ -157,18 +157,18 @@ var sprites = {
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,],
-[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
-[0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
-[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
-[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
-[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,],
-[1,1,1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,0,0,0,],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,],
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,],
+[1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
 [0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
@@ -686,7 +686,7 @@ var game = () => {
         player1.speedY = 1;
         player1.recoilY = 0;
     }
-    if((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.recoilX) + Math.abs(player1.speedX)),sprites.level[currentlevel].width)] == 1)) { //very long line yes very nice
+    if(((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.recoilX) + Math.abs(player1.speedX)),sprites.level[currentlevel].width)] == 1)) || ((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width - 2,sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1))) { //very long line yes very nice
         if(player1.speedX + player1.recoilX > 0) {
             player1.x--;
         } else if(player1.speedX + player1.recoilX < 0) {
