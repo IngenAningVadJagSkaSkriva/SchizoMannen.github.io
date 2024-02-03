@@ -339,7 +339,7 @@ class player {
         }
     }
 }
-var maxbullets = 100;
+var maxbullets = 1000;
 var shootindex = 0;
 class bullet {
     constructor() {
@@ -350,14 +350,21 @@ class bullet {
         this.size = 1;
         this.live = 0;
         this.speed = 0;
+        this.blood = 0;
     }
     update() {
         this.x += this.speedX * this.speed;
         this.y += this.speedY * this.speed;
+        if(this.blood == 1) {
+            if(this.speedY < 1) {
+                this.speedY += 0.1;
+            }
+        }
     }
-    new(x,y,speedX,speedY,size,speed) {
+    new(x,y,speedX,speedY,size,speed,blood) {
         this.x = x;
         this.y = y;
+        this.blood = blood;
         this.size = size;
         this.speedX = speedX;
         this.speedY = speedY;
@@ -443,6 +450,10 @@ drawing = () => {
                 ctx.fillStyle = "grey";
                 ctx.fillRect(j,i,1,1);
                 map[i][j] = 0;
+            } else if(map[i][j] == 4) {
+                ctx.fillStyle = "rgb(200,0,0)";
+                ctx.fillRect(j,i,1,1);
+                map[i][j] = 0;
             }
         }
     }
@@ -500,16 +511,21 @@ addEventListener("contextmenu",(e) => {
         player1.recoilX = test(player1.x,player1.y,mouse.x,mouse.y,"X") * 5;
         player1.recoilY = test(player1.x,player1.y,mouse.x,mouse.y,"Y") * 5;
         for(let i = 0; i < 5; i++) {
-            shoot(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,player1.recoilX * -1 + RB(-5,5) / 10,player1.recoilY * -1 + RB(-5,5) / 10,1,1.5);
+            shoot(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,player1.recoilX * -1 + RB(-5,5) / 10,player1.recoilY * -1 + RB(-5,5) / 10,1,1.5,0);
         }
         player1.fuel--;
     }
     return false;
 },false)
-var shoot = (x,y,speedX,speedY,size,speed) => {
+var shoot = (x,y,speedX,speedY,size,speed,blood) => {
     shootindex++;
     if(shootindex >= maxbullets) shootindex = 0;
-    bullets[shootindex].new(x,y,speedX,speedY,size,speed);
+    bullets[shootindex].new(x,y,speedX,speedY,size,speed,blood);
+}
+var bleed = (x,y,howmuch) => {
+    for(let a = 0; a < howmuch; a++) {
+        shoot(x,y,Math.cos(RB(0,3600) / 10),Math.sin(RB(0,3600) / 10),1,3,1);
+    }
 }
 var handlebullet = () => {
     for(let i = 0; i < maxbullets; i++) {
@@ -518,13 +534,22 @@ var handlebullet = () => {
             if((bullets[i].x >= canvas.width || bullets[i].y >= canvas.height) || (bullets[i].x <= 0 || bullets[i].y <= 0)) {
                 bullets[i].end();
             }
-            for(let y = 0; y < bullets[i].size; y++) {
-                for(let x = 0; x < bullets[i].size; x++) {
-                    if((bullets[i].x > bullets[i].size && bullets[i].x < canvas.width - bullets[i].size) && (bullets[i].y > bullets[i].size && bullets[i].y < canvas.height - bullets[i].size)) {
-                        map[Math.floor(bullets[i].y + y)][Math.floor(bullets[i].x + x)] = 3;
-                        if(sprites.level[currentlevel].map[where(canvas.height,bullets[i].y + y,sprites.level[currentlevel].height)][where(canvas.width,bullets[i].x + x,sprites.level[currentlevel].width)] == 1) {
+            if(bullets[i].blood == 1) {
+                if((bullets[i].x > 0 && bullets[i].x < canvas.width) && (bullets[i].y > 0 && bullets[i].y < canvas.height)) {
+                    map[Math.floor(bullets[i].y)][Math.floor(bullets[i].x)] = 4;
+                    if(sprites.level[currentlevel].map[where(canvas.height,bullets[i].y,sprites.level[currentlevel].height)][where(canvas.width,bullets[i].x,sprites.level[currentlevel].width)] == 1) {
                         bullets[i].end();
                     }
+                }
+            } else {
+                for(let y = 0; y < bullets[i].size; y++) {
+                    for(let x = 0; x < bullets[i].size; x++) {
+                        if((bullets[i].x > bullets[i].size && bullets[i].x < canvas.width - bullets[i].size) && (bullets[i].y > bullets[i].size && bullets[i].y < canvas.height - bullets[i].size)) {
+                            map[Math.floor(bullets[i].y + y)][Math.floor(bullets[i].x + x)] = 3;
+                            if(sprites.level[currentlevel].map[where(canvas.height,bullets[i].y + y,sprites.level[currentlevel].height)][where(canvas.width,bullets[i].x + x,sprites.level[currentlevel].width)] == 1) {
+                            bullets[i].end();
+                        }
+                        }
                     }
                 }
             }
@@ -581,6 +606,7 @@ var handelenemys = () => {
                     kills = 0;
                     changelevel(currentlevel + 1);
                 }
+                bleed(enemys[i].x,enemys[i].y,100);
             }
         } else if(RB(1,200 - player1.insanity * 2) <= 1) {
             let a = RB(1,4);
@@ -608,6 +634,11 @@ var handelenemys = () => {
         if(distance(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,enemys[i].x + enemys[i].size / 2,enemys[i].y + enemys[i].size / 2) <= 11 && enemys[i].live == 1) {
             fear.play();
             player1.insanity += (0.5 + difficulty) * (player1.insanity / player1.maxinsanity + 1);
+            if(player1.insanity < player1.maxinsanity) {
+                bleed(player1.x,player1.y,1);
+            } else {
+                bleed(player1.x,player1.y,10);
+            }
         }
     }
 }
@@ -620,6 +651,9 @@ var changelevel = (whatlevel) => {
     player1.insanity *= 0.7;
     for(let i = 0; i < maxenemys; i++) {
         enemys[i].end();
+    }
+    for(let i = 0; i < maxbullets; i++) {
+        bullets[i].end();
     }
     player1.recoilX = 0;
     player1.recoilY = 0;
@@ -655,8 +689,8 @@ var game = () => {
         } else if(player1.speedX + player1.recoilX < 0) {
             player1.x++;
         }
-        player1.speedX *= -1;
-        player1.recoilX *= -1;
+        player1.speedX = 0;
+        player1.recoilX = 0;
     }
     if(player1.y > canvas.height) {
         player1.speedY = -1;
@@ -684,6 +718,9 @@ var game = () => {
     }
     player1.x2 = x;
     player1.y2 = y;
+    if(player1.insanity >= 50 && RB(1,20) == 1) {
+        bleed(player1.x,player1.y,5);
+    } 
     handlebullet();
     for(let y = 0; y < sprites.player.height; y++) {
         for(let x = 0; x < sprites.player.width; x++) {
@@ -742,7 +779,7 @@ addEventListener("click",(e) => {
     let speedY = test(player1.x2,player1.y2,mouse.x,mouse.y,"Y");
     player1.recoilX = speedX * -1;
     player1.recoilY = speedY * -1;
-    shoot(player1.x2,player1.y2,speedX,speedY,2,5);
+    shoot(player1.x2,player1.y2,speedX,speedY,2,5,0);
     }
 })
 window.onblur = () => {
