@@ -4,8 +4,11 @@ canvas.height = 100;
 canvas.width = canvas.height * 2;
 
 var death = new Audio("death.mp3");
+death.volume = 0.1;
 var fear = new Audio("fear.mp3");
+fear.volume = 0.2;
 var spawn = new Audio("spawn.mp3");
+spawn.volume = 0.2;
 var s = 0;
 var s2 = 0;
 var dead = 0;
