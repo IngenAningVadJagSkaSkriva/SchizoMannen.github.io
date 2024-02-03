@@ -649,9 +649,14 @@ var game = () => {
         player1.speedY = 1;
         player1.recoilY = 0;
     }
-    if((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1)) { //very long line yes very nice
-        player1.speedX *= -2.2;
-        player1.recoilX *= -2.2;
+    if((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.recoilX) + Math.abs(player1.speedX)),sprites.level[currentlevel].width)] == 1)) { //very long line yes very nice
+        if(player1.speedX + player1.recoilX > 0) {
+            player1.x--;
+        } else if(player1.speedX + player1.recoilX < 0) {
+            player1.x++;
+        }
+        player1.speedX *= -1;
+        player1.recoilX *= -1;
     }
     if(player1.y > canvas.height) {
         player1.speedY = -1;
@@ -675,7 +680,7 @@ var game = () => {
     while(distance(x,y,player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2) < 10) {
         x += speedX;
         y += speedY;
-        if(distance(x,y,player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2) > 7) map[Math.floor(y)][Math.floor(x)] = 2;
+        if(distance(x,y,player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2) > 7 && ((x > 0 && x < canvas.width) && (y > 0 && y < canvas.height))) map[Math.floor(y)][Math.floor(x)] = 2;
     }
     player1.x2 = x;
     player1.y2 = y;
