@@ -491,9 +491,6 @@ onkeydown = onkeyup = (e) => {
                 player1.update();
                 keys[87] = 0;
                 keys[38] = 0;
-                if(keys[32]) {
-                    changelevel(0);
-                }
                 keys[32] = 0;
             }
         }
