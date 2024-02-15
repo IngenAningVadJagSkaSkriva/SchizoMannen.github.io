@@ -686,11 +686,14 @@ var game = () => {
     if(((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x - (Math.abs(player1.speedX) + Math.abs(player1.recoilX)),sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width + (Math.abs(player1.recoilX) + Math.abs(player1.speedX)),sprites.level[currentlevel].width)] == 1)) || ((sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width - 2,sprites.level[currentlevel].width)] == 1) || (sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x,sprites.level[currentlevel].width)] == 1 || sprites.level[currentlevel].map[where(canvas.height,player1.y + sprites.player.height - 2,sprites.level[currentlevel].height)][where(canvas.width,player1.x + sprites.player.width,sprites.level[currentlevel].width)] == 1))) { //very long line yes very nice
         if(player1.speedX + player1.recoilX > 0) {
             player1.x--;
+            player1.recoilX = -1;
         } else if(player1.speedX + player1.recoilX < 0) {
             player1.x++;
+            player1.recoilX = 1;
+        } else {
+            player1.recoilX = 0;
         }
         player1.speedX = 0;
-        player1.recoilX = 0;
     }
     if(player1.y > canvas.height) {
         player1.speedY = -1;
@@ -720,6 +723,7 @@ var game = () => {
     player1.y2 = y;
     if(player1.insanity >= 50 && RB(1,20) == 1) {
         bleed(player1.x,player1.y,5);
+        bleed(RB(0,canvas.width),RB(0,canvas.height),10);
     } 
     handlebullet();
     for(let y = 0; y < sprites.player.height; y++) {
