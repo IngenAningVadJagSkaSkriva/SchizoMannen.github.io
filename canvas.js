@@ -390,6 +390,8 @@ class enemy {
         this.size = 10;
         this.live = 0;
         this.health = 3;
+        this.speedster = 0;
+        this.fat = 0;
         this.map = [
             [2,0,0,1,1,1,1,0,0,2],
             [2,2,0,1,0,0,1,0,2,2],
@@ -404,8 +406,13 @@ class enemy {
         ]
     }
     update() {
-        this.x += this.speedX * this.speed;
-        this.y += this.speedY * this.speed;
+        if(this.fat != 1) {
+            this.x += this.speedX * (this.speed + this.speedster * 1.75);
+            this.y += this.speedY * (this.speed + this.speedster * 1.75);
+        } else {
+            this.x += this.speedX * 0.5;
+            this.y += this.speedY * 0.5;
+        }
     }
     new(x,y,speed,health) {
         spawn.currentTime = 0;
@@ -415,8 +422,19 @@ class enemy {
         this.y = y;
         this.health = health;
         this.speed = speed;
+        if(RB(1,3) == 1) {
+            if(RB(1,2) == 1) {
+                this.speedster = 1;
+                this.health = 5;
+            } else if(RB(1,3) == 1) {
+                this.fat = 1;
+                this.health = 50;
+            }
+        }
     }
     end() {
+        this.speedster = 0;
+        this.fat = 0;
         this.live = 0;
         death.currentTime = 0;
         death.play();
@@ -582,6 +600,11 @@ var handelenemys = () => {
                         ctx.fillStyle = "grey";
                     } else if(enemys[i].map[y][x] == 2) {
                         ctx.fillStyle = "red";
+                        if(enemys[i].speedster == 1) {
+                            ctx.fillStyle = "blue";
+                        } else if(enemys[i].fat == 1) {
+                            ctx.fillStyle = "brown";
+                        }
                     }
                     ctx.fillRect(Math.floor(enemys[i].x + x),Math.floor(enemys[i].y + y),1,1);
                     let xx = enemys[i].x + x;
@@ -633,7 +656,11 @@ var handelenemys = () => {
         }
         if(distance(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,enemys[i].x + enemys[i].size / 2,enemys[i].y + enemys[i].size / 2) <= 11 && enemys[i].live == 1) {
             fear.play();
-            player1.insanity += (0.5 + difficulty) * (player1.insanity / player1.maxinsanity + 1);
+            if(enemys[i].speedster != 1) {
+                player1.insanity += (0.5 + difficulty) * (player1.insanity / player1.maxinsanity + 1);
+            } else {
+                player1.insanity += 0.5;
+            }
             if(player1.insanity < player1.maxinsanity) {
                 bleed(player1.x,player1.y,1);
             } else {
