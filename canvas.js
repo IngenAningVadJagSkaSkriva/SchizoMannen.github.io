@@ -494,7 +494,7 @@ drawing = () => {
         ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity+"  IMPOSSIBLE!",0,canvas.height / 10,canvas.width);
     } else if(difficulty < 0) {
         ctx.fillText("FUEL: "+player1.fuel+"/"+player1.maxfuel+"    INSANITY: "+Math.floor(player1.insanity)+"/"+player1.maxinsanity+"  TUTORIAL",0,canvas.height / 10,canvas.width);
-        ctx.fillStyle = "rgb(255,0,0)";
+        ctx.fillStyle = "rgb(0,0,255)";
         ctx.fillText("RIGHT CLICK FOR ROCKET BOOST",canvas.width / 10,canvas.height / 2,canvas.width);
         ctx.fillText("WASD OR ARROW KEYS TO MOVE",canvas.width / 10,canvas.height / 2 + 10,canvas.width);
         ctx.fillText("CLICK TO SHOOT!",canvas.width / 10,canvas.height / 2 + 20,canvas.width);
