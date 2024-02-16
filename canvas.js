@@ -357,8 +357,10 @@ class bullet {
         this.live = 0;
         this.speed = 0;
         this.blood = 0;
+        this.stuck = 0;
     }
     update() {
+        if(this.stuck == 1) return 0;
         this.x += this.speedX * this.speed;
         this.y += this.speedY * this.speed;
         if(this.blood == 1) {
@@ -375,9 +377,11 @@ class bullet {
         this.speedX = speedX;
         this.speedY = speedY;
         this.live = 1;
+        this.stuck = 0;
         this.speed = speed;
     }
     end() {
+        this.stuck = 0;
         this.live = 0;
     }
 }
@@ -463,10 +467,7 @@ drawing = () => {
             map2[i][j] = map[i][j];
             let ii = Math.floor((i / canvas.height) * sprites.level[currentlevel].height);
             let jj = Math.floor((j / canvas.width) * sprites.level[currentlevel].width);
-            if(sprites.level[currentlevel].map[ii][jj] == 1) {
-                ctx.fillStyle = "white";
-                ctx.fillRect(j,i,1,1);
-            } else if(map[i][j] == 2) {
+            if(map[i][j] == 2) {
                 ctx.fillStyle = "green";
                 ctx.fillRect(j,i,1,1);
                 map[i][j] = 0;
@@ -478,6 +479,9 @@ drawing = () => {
                 ctx.fillStyle = "rgb(200,0,0)";
                 ctx.fillRect(j,i,1,1);
                 map[i][j] = 0;
+            } else if(sprites.level[currentlevel].map[ii][jj] == 1) {
+                ctx.fillStyle = "white";
+                ctx.fillRect(j,i,1,1);
             }
         }
     }
@@ -566,7 +570,7 @@ var handlebullet = () => {
                 if((bullets[i].x > 0 && bullets[i].x < canvas.width) && (bullets[i].y > 0 && bullets[i].y < canvas.height)) {
                     map[Math.floor(bullets[i].y)][Math.floor(bullets[i].x)] = 4;
                     if(sprites.level[currentlevel].map[where(canvas.height,bullets[i].y,sprites.level[currentlevel].height)][where(canvas.width,bullets[i].x,sprites.level[currentlevel].width)] == 1) {
-                        bullets[i].end();
+                        bullets[i].stuck = 1;
                     }
                 }
             } else {
@@ -762,7 +766,6 @@ var game = () => {
         bleed(player1.x,player1.y,5);
         bleed(RB(0,canvas.width),RB(0,canvas.height),10);
     } 
-    handlebullet();
     for(let y = 0; y < sprites.player.height; y++) {
         for(let x = 0; x < sprites.player.width; x++) {
             ctx.fillStyle = "black";
@@ -790,6 +793,7 @@ var game = () => {
     if(RB(1,25) == 1 && player1.insanity > 1) {
         player1.insanity--;
     }
+    handlebullet();
     handelenemys();
     setTimeout(() => {
         drawing();
