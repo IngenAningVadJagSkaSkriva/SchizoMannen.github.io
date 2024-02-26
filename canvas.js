@@ -269,15 +269,27 @@ var sprites = {
         width: 5,
         map: [
             [0,1,1,1,0],
-            [1,0,0,0,1],
-            [1,0,2,0,1],
-            [1,0,0,0,1],
+            [1,4,4,4,1],
+            [1,4,2,4,1],
+            [1,4,4,4,1],
             [0,1,1,1,0],
             [0,0,1,0,0],
             [1,1,1,1,1],
             [0,0,3,0,0],
             [0,3,0,3,0],
             [0,3,0,3,0]
+        ],
+        map2: [
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0],
+            [0,0,0,0,0]
         ]
     }
 }
@@ -300,6 +312,7 @@ class player {
         this.fuel = 5;
         this.maxfuel = 10;
         this.insanity = 0;
+        this.blood = 0;
         this.maxinsanity = 100;
     }
     update() {
@@ -766,18 +779,35 @@ var game = () => {
         bleed(player1.x,player1.y,5);
         bleed(RB(0,canvas.width),RB(0,canvas.height),10);
     } 
+    let full = 0;
+    let current = 0;
     for(let y = 0; y < sprites.player.height; y++) {
         for(let x = 0; x < sprites.player.width; x++) {
-            ctx.fillStyle = "black";
-            if(sprites.player.map[y][x] == 1) {
-                ctx.fillStyle = "white";
-            } else if(sprites.player.map[y][x] == 2) {
-                ctx.fillStyle = "rgb("+RB(0,255)+","+RB(0,255)+","+RB(0,255)+")"
-            } else if(sprites.player.map[y][x] == 3) {
-                ctx.fillStyle = "grey";
+            if(sprites.player.map[y][x] != 0) {
+                full++;
+                if(sprites.player.map2[y][x] > 0) {
+                    sprites.player.map2[y][x] -= 1;
+                    current++;
+                }
+                if(map2[Math.floor(player1.y + y)][Math.floor(player1.x + x)] == 4) {
+                    sprites.player.map2[y][x] = 255;
+                }
+                ctx.fillStyle = "black";
+                if(sprites.player.map[y][x] == 1) {
+                    ctx.fillStyle = "white";
+                } else if(sprites.player.map[y][x] == 2) {
+                    ctx.fillStyle = "rgb("+RB(0,255)+","+RB(0,255)+","+RB(0,255)+")"
+                } else if(sprites.player.map[y][x] == 3) {
+                    ctx.fillStyle = "grey";
+                }
+                if((player1.y + y < canvas.height && player1.y + y > 0) && (player1.x + x < canvas.width && player1.x + x > 0)) {
+                    ctx.fillRect(Math.floor(player1.x + x),Math.floor(player1.y + y),1,1);
+                    ctx.fillStyle = "rgb("+sprites.player.map2[y][x]+",0,0)";
+                    if(sprites.player.map2[y][x] > 100) ctx.fillRect(Math.floor(player1.x + x),Math.floor(player1.y + y),1,1);
+                }
             }
-            if((player1.y + y < canvas.height && player1.y + y > 0) && (player1.x + x < canvas.width && player1.x + x > 0)) ctx.fillRect(Math.floor(player1.x + x),Math.floor(player1.y + y),1,1);
         }
+        player1.blood = (current / full) + 1;
     }
     if(player1.insanity > player1.maxinsanity) {
         document.getElementById("clap").play();
