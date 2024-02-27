@@ -9,6 +9,7 @@ var fear = new Audio("fear.mp3");
 fear.volume = 0.2;
 var spawn = new Audio("spawn.mp3");
 spawn.volume = 0.2;
+var horror = new Audio("horror.mp3");
 var s = 0;
 var s2 = 0;
 var dead = 0;
@@ -358,7 +359,7 @@ class player {
         }
     }
 }
-var maxbullets = 1000;
+var maxbullets = 1500;
 var shootindex = 0;
 class bullet {
     constructor() {
@@ -696,7 +697,20 @@ var handelenemys = () => {
         }
     }
 }
+var mad = (text,time) => {
+    s = 2;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "red";
+    ctx.fillText(text,canvas.width / 4,canvas.height / 2,(canvas.width / 4) * 3);
+    setTimeout(() => {
+        horror.pause();
+        s = 1;
+        game();
+    },time);
+}
 var changelevel = (whatlevel) => {
+   horror.play();
+   setTimeout(() => {
     if(whatlevel > maxlevels) {
         whatlevel = 0;
     } else if(whatlevel < 0) {
@@ -713,13 +727,53 @@ var changelevel = (whatlevel) => {
     player1.recoilY = 0;
     player1.speedX = 0;
     player1.speedY = 0;
+    shootindex = 0;
     player1.x = where(sprites.level[whatlevel].width,sprites.level[whatlevel].startX,canvas.width);
     player1.y = where(sprites.level[whatlevel].height,sprites.level[whatlevel].startY,canvas.height);
     currentlevel = whatlevel;
+    let time = 1500;
+    death.pause();
+    fear.pause();
+    spawn.pause();
+    switch(RB(1,10)) {
+        case 1:
+            mad("KILL THEM ALL!",time);
+        break;
+        case 2:
+            mad("THEY MUST SUFFER!",time);
+        break;
+        case 3:
+            mad("MAKE THEM BLEED!",time);
+        break;
+        case 4:
+            mad("THEY MUST DIE!",time);
+        break;
+        case 5:
+            mad("DEMONS EVERYWHERE!",time);
+        break;
+        case 6:
+            mad("KILL EVERYONE!",time);
+        break;
+        case 7:
+            mad("BLOOD EVERYWHERE!",time);
+        break;
+        case 8:
+            mad("KILL! KILL! KILL!",time);
+        break;
+        case 9:
+            mad("LOOK AT THEM!",time);
+        break;
+        case 10:
+            mad("DIE! DIE! DIE!",time);
+        break;
+    }
+   },500);
 }
 var game = () => {
     if(s == 0) {
         menu();
+        return 0;
+    } else if(s == 2) {
         return 0;
     }
     if(player1.y + sprites.player.height < canvas.height) {
@@ -819,15 +873,33 @@ var game = () => {
             location.reload();
         },15000)
         dead = 1;
+        let time = 250;
+        if(RB(1,40) == 1) {
+            switch(RB(1,3)) {
+                case 1:
+                    mad("STOP!",time);
+                break;
+                case 2:
+                    mad("PLEASE!",time);
+                break;
+                case 3:
+                    mad("NO!",time);
+                break;
+            }
+        }
     }
     if(RB(1,25) == 1 && player1.insanity > 1) {
         player1.insanity--;
     }
+   if(s != 2) {
     handlebullet();
     handelenemys();
+   }
     setTimeout(() => {
-        drawing();
-        game();
+        if(s != 2) {
+            drawing();
+            game();
+        }
         return 0;
     },1000/30);
 }
@@ -840,7 +912,7 @@ ctx.fillText("CLICK TO START AND SHOOT!",canvas.width / 5,canvas.height / 2 + 20
 }
 menu();
 addEventListener("click",(e) => {
-    if(s != 1) {
+    if(s != 1 && s != 2) {
         s = 1;
         game();
         s2 = 0;
