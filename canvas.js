@@ -93,6 +93,7 @@ var array2D = (y,x) => {
 }
 var map = array2D(canvas.height,canvas.width);
 var map2 = array2D(canvas.height,canvas.width);
+var map3 = array2D(canvas.height,canvas.width);
 var sprites = {
    level: [
     {//level 0
@@ -489,7 +490,7 @@ drawing = () => {
                 ctx.fillStyle = "grey";
                 ctx.fillRect(j,i,1,1);
                 map[i][j] = 0;
-            } else if(map[i][j] == 4) {
+            } else if(map[i][j] == 4 || map3[i][j] == 4) {
                 ctx.fillStyle = "rgb(200,0,0)";
                 ctx.fillRect(j,i,1,1);
                 map[i][j] = 0;
@@ -557,7 +558,7 @@ addEventListener("contextmenu",(e) => {
         player1.recoilX = test(player1.x,player1.y,mouse.x,mouse.y,"X") * 5;
         player1.recoilY = test(player1.x,player1.y,mouse.x,mouse.y,"Y") * 5;
         for(let i = 0; i < 5; i++) {
-            shoot(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,player1.recoilX * -1 + RB(-5,5) / 10,player1.recoilY * -1 + RB(-5,5) / 10,1,1.5,0);
+            shoot(player1.x + sprites.player.width / 2,player1.y + sprites.player.height / 2,player1.recoilX * -1 + RB(-5,5) / 10,player1.recoilY * -1 + RB(-5,5) / 10,1,1,0);
         }
         player1.fuel--;
     }
@@ -585,6 +586,7 @@ var handlebullet = () => {
                     map[Math.floor(bullets[i].y)][Math.floor(bullets[i].x)] = 4;
                     if(sprites.level[currentlevel].map[where(canvas.height,bullets[i].y,sprites.level[currentlevel].height)][where(canvas.width,bullets[i].x,sprites.level[currentlevel].width)] == 1) {
                         bullets[i].stuck = 1;
+                        map3[Math.floor(bullets[i].y)][Math.floor(bullets[i].x)] = 4;
                     }
                 }
             } else {
@@ -723,6 +725,13 @@ var changelevel = (whatlevel) => {
     for(let i = 0; i < maxbullets; i++) {
         bullets[i].end();
     }
+    for(let i = 0; i < canvas.height; i++) {
+        for(let j = 0; j < canvas.width; j++) {
+            map[i][j] = 0;
+            map2[i][j] = 0;
+            map3[i][j] = 0;
+        }
+    }
     player1.recoilX = 0;
     player1.recoilY = 0;
     player1.speedX = 0;
@@ -731,7 +740,7 @@ var changelevel = (whatlevel) => {
     player1.x = where(sprites.level[whatlevel].width,sprites.level[whatlevel].startX,canvas.width);
     player1.y = where(sprites.level[whatlevel].height,sprites.level[whatlevel].startY,canvas.height);
     currentlevel = whatlevel;
-    let time = 1500;
+    let time = 750;
     death.pause();
     fear.pause();
     spawn.pause();
@@ -764,7 +773,7 @@ var changelevel = (whatlevel) => {
             mad("LOOK AT THEM!",time);
         break;
         case 10:
-            mad("DIE! DIE! DIE!",time);
+            mad("DEMONS! DEMONS! DEMONS!",time);
         break;
     }
    },500);
@@ -831,7 +840,6 @@ var game = () => {
     player1.y2 = y;
     if(player1.insanity >= 50 && RB(1,20) == 1) {
         bleed(player1.x,player1.y,5);
-        bleed(RB(0,canvas.width),RB(0,canvas.height),10);
     } 
     let full = 0;
     let current = 0;
